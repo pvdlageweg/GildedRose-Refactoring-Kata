@@ -36,4 +36,37 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>pitest</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-maven</artifactId>
+                        <version>1.4.10</version>
+                        <executions>
+                            <execution>
+                                <id>pit-report</id>
+                                <!-- optional, this example attached the goal into mvn test phase -->
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>mutationCoverage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <targetClasses>
+                                <param>com.gildedrose.*</param>
+                            </targetClasses>
+                            <targetTests>
+                                <param>com.gildedrose.*</param>
+                            </targetTests>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
