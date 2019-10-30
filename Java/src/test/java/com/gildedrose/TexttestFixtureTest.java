@@ -1,27 +1,21 @@
 package com.gildedrose;
 
-import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TexttestFixtureTest {
-	private Item[] items;
+	private Item item;
 
 	private GildedRose app;
 
-	@Before
-	public void setUp() throws Exception {
-		items = new Item[]{null};
-		app = new GildedRose(items);
-	}
-
 	@Test
 	public void testPlusFiveDexterity() throws Exception {
-		Item item = new Item("+5 Dexterity Vest", 10, 20);
-		items[0] = item;
+		createItemAndApp("+5 Dexterity Vest", 10, 20);
 
-		assertThat(items).hasSize(1);
+		assertThat(app.getItems()).hasSize(1);
 		validateItem(item, 10, 20);
 		app.updateQuality();
 		validateItem(item, 9, 19);
@@ -55,10 +49,9 @@ public class TexttestFixtureTest {
 
 	@Test
 	public void testAgedBrie() throws Exception {
-		Item item = new Item("Aged Brie", 2, 0);
-		items[0] = item;
+		createItemAndApp("Aged Brie", 2, 0);
 
-		assertThat(items).hasSize(1);
+		assertThat(app.getItems()).hasSize(1);
 		validateItem(item, 2, 0);
 		app.updateQuality();
 		validateItem(item, 1, 1);
@@ -74,10 +67,9 @@ public class TexttestFixtureTest {
 
 	@Test
 	public void testMongoose() throws Exception {
-		Item item = new Item("Elixir of the Mongoose", 5, 7);
-		items[0] = item;
+		createItemAndApp("Elixir of the Mongoose", 5, 7);
 
-		assertThat(items).hasSize(1);
+		assertThat(app.getItems()).hasSize(1);
 		validateItem(item, 5, 7);
 		app.updateQuality();
 		validateItem(item, 4, 6);
@@ -95,10 +87,9 @@ public class TexttestFixtureTest {
 
 	@Test
 	public void testSulfurasStartAddSellInZeroStaysZeroQualityDoesNotChange() throws Exception {
-		Item item = new Item("Sulfuras, Hand of Ragnaros", 0, 80);
-		items[0] = item;
+		createItemAndApp("Sulfuras, Hand of Ragnaros", 0, 80);
 
-		assertThat(items).hasSize(1);
+		assertThat(app.getItems()).hasSize(1);
 		for (int i = 0; i < 20; i++) {
 			app.updateQuality();
 			validateItem(item, 0, 80);
@@ -107,10 +98,9 @@ public class TexttestFixtureTest {
 
 	@Test
 	public void testSulfurasStartAddSellInMinusOneDateStaysSameQualityDoesNotChange() throws Exception {
-		Item item = new Item("Sulfuras, Hand of Ragnaros", -1, 80);
-		items[0] = item;
+		createItemAndApp("Sulfuras, Hand of Ragnaros", -1, 80);
 
-		assertThat(items).hasSize(1);
+		assertThat(app.getItems()).hasSize(1);
 		for (int i = 0; i < 20; i++) {
 			app.updateQuality();
 			validateItem(item, -1, 80);
@@ -119,10 +109,9 @@ public class TexttestFixtureTest {
 
 	@Test
 	public void testBackstagePass() throws Exception {
-		Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 12, 31);
-		items[0] = item;
+		createItemAndApp("Backstage passes to a TAFKAL80ETC concert", 12, 31);
 
-		assertThat(items).hasSize(1);
+		assertThat(app.getItems()).hasSize(1);
 		validateItem(item, 12, 31);
 		app.updateQuality();
 		validateItem(item, 11, 32);
@@ -154,6 +143,12 @@ public class TexttestFixtureTest {
 		validateItem(item, -2, 0);
 		app.updateQuality();
 	}
+
+	private void createItemAndApp(final String name, final int sellIn, final int quality) {
+		item = new Item(name, sellIn, quality);
+		app = new GildedRose(Collections.singletonList(item));
+	}
+
 
 //    @Test
 //    public void testConjured() throws Exception{

@@ -1,10 +1,18 @@
 package com.gildedrose;
 
-class GildedRose {
-    Item[] items;
+import com.google.common.collect.ImmutableList;
 
-    public GildedRose(Item[] items) {
+import java.util.List;
+
+class GildedRose {
+    private List<Item> items;
+
+    public GildedRose(final List<Item> items) {
         this.items = items;
+    }
+
+    public List<Item> getItems() {
+        return ImmutableList.copyOf(items);
     }
 
     public void updateQuality() {
