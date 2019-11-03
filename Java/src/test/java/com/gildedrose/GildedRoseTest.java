@@ -1,5 +1,6 @@
 package com.gildedrose;
 
+import com.gildedrose.items.StandardItem;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -11,7 +12,7 @@ public class GildedRoseTest {
 
 	@Test
 	public void foo() {
-		List<Item> items = Collections.singletonList(new Item("foo", 0, 0));
+		List<Item> items = Collections.singletonList(new StandardItem("foo", 0, 0));
 		GildedRose app = new GildedRose(items);
 		app.updateQuality();
 		assertThat(app.getItems()).hasSize(1);

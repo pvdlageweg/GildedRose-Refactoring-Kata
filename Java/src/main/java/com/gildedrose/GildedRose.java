@@ -5,66 +5,20 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 class GildedRose {
-    private List<Item> items;
 
-    public GildedRose(final List<Item> items) {
-        this.items = items;
-    }
+	private volatile List<? extends Item> items;
 
-    public List<Item> getItems() {
-        return ImmutableList.copyOf(items);
-    }
+	public GildedRose(final List<? extends Item> items) {
+		this.items = items;
+	}
 
-    public void updateQuality() {
-        for (Item item : items) {
-            if (!item.name.equals("Aged Brie")
-                    && !item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                if (item.quality > 0) {
-                    if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
-                        item.quality = item.quality - 1;
-                    }
-                }
-            } else {
-                if (item.quality < 50) {
-                    item.quality = item.quality + 1;
+	public List<? extends Item> getItems() {
+		return ImmutableList.copyOf(items);
+	}
 
-                    if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                        if (item.sellIn < 11) {
-                            if (item.quality < 50) {
-                                item.quality = item.quality + 1;
-                            }
-                        }
-
-                        if (item.sellIn < 6) {
-                            if (item.quality < 50) {
-                                item.quality = item.quality + 1;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
-                item.sellIn = item.sellIn - 1;
-            }
-
-            if (item.sellIn < 0) {
-                if (!item.name.equals("Aged Brie")) {
-                    if (!item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                        if (item.quality > 0) {
-                            if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
-                                item.quality = item.quality - 1;
-                            }
-                        }
-                    } else {
-                        item.quality = item.quality - item.quality;
-                    }
-                } else {
-                    if (item.quality < 50) {
-                        item.quality = item.quality + 1;
-                    }
-                }
-            }
-        }
-    }
+	@SuppressWarnings("unchecked")
+	public <T extends Item> void updateQuality() {
+		items = items.stream()
+				.map(item -> ((ItemService<T>) ServiceFactory.getItemsService(item)).getUpdatedItem((T) item)).collect(ImmutableList.toImmutableList());
+	}
 }
