@@ -6,10 +6,10 @@ import java.util.List;
 
 class GildedRose {
 
-	private volatile List<? extends Item> items;
+	private List<Item> items;
 
 	public GildedRose(final List<? extends Item> items) {
-		this.items = items;
+		this.items = (List<Item>)items;
 	}
 
 	public List<? extends Item> getItems() {
@@ -18,7 +18,11 @@ class GildedRose {
 
 	@SuppressWarnings("unchecked")
 	public <T extends Item> void updateQuality() {
-		items = items.stream()
-				.map(item -> ((ItemService<T>) ServiceFactory.getItemsService(item)).getUpdatedItem((T) item)).collect(ImmutableList.toImmutableList());
+		items.forEach(item->{
+			ItemService<T> service = ServiceFactory.getItemsService(item);
+			T newItem = (T)service.getUpdatedItem((T)item);
+			item.sellIn = newItem.sellIn;
+			item.quality = newItem.quality;
+		});
 	}
 }
