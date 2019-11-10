@@ -15,6 +15,7 @@ public class ServiceFactory {
 		SERVICE_MAP.put(AgedBrieItem.class, new AgedBrieItemService());
 		SERVICE_MAP.put(ConjuredItem.class, new ConjuredItemService());
 		SERVICE_MAP.put(BackstagePassItem.class, new BackstagePassService());
+		SERVICE_MAP.put(LegendaryItem.class, new LegendaryItemService());
 	}
 
 	@SuppressWarnings("unchecked")
